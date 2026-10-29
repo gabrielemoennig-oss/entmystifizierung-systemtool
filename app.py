@@ -2,7 +2,8 @@ import streamlit as st
 import datetime
 import math
 
-# Versuche die Ephemeriden-Bibliothek zu laden. 
+# --- AUTOMATISCHE ENGINE-PRÜFUNG ---
+# Versucht die Ephemeriden-Bibliothek zu laden. 
 # Falls sie auf dem Server noch nicht installiert ist, nutzen wir einen exakten mathematischen Platzhalter.
 try:
     import swisseph as swe
@@ -10,8 +11,8 @@ try:
 except ImportError:
     EPHE_AVAILABLE = False
 
-# --- SEITENKONFIGURATION (REINER PRAGMATISMUS) ---
-st.set_page_config(page_title="Bio-Psychologisches Systemanalyse-Tool", layout="centered")
+# --- SEITENKONFIGURATION (MODERN & ZUGÄNGLICH) ---
+st.set_page_config(page_title="Systemanalyse 2026+", layout="centered")
 
 st.title("🎛️ Bio-Psychologische Systemanalyse")
 st.subheader("Entmystifizierte Standortbestimmung Ihres Betriebssystems")
@@ -20,7 +21,7 @@ st.write("---")
 st.markdown("""
 Dieses Tool berechnet die exakten astronomischen Raum-Zeit-Koordinaten Ihres Körpersystems 
 zum Zeitpunkt der Geburt sowie zum biologischen Triggerpunkt (88°-Delta). 
-*Die Auswertung erfolgt rein funktional, mathematisch und strukturell – frei von spirituellen Deutungen.*
+*Die Auswertung erfolgt rein funktional, mathematisch und strukturell – komplett frei von spirituellen Deutungen.*
 """)
 
 # --- EINGABEMASKE FÜR DEN NUTZER ---
@@ -46,19 +47,18 @@ def calculate_matrix(target_date, target_time):
         julian_day = swe.julday(target_date.year, target_date.month, target_date.day, decimal_hour)
         # Berechnung der Sonnenposition auf der 360°-Ekliptik
         position, ret = swe.calc_ut(julian_day, swe.SUN, 0)
-        sonnen_grad = position[0]
+        sonnen_grad = position
     else:
         # Mathematische Näherungs-Formel (Präzise genug für die Visualisierung ohne C-Bibliothek)
-        # Berechnet den Tag des Jahres
         fmt = "%Y-%m-%d"
         d1 = datetime.datetime.strptime(f"{target_date.year}-01-01", fmt)
         d2 = datetime.datetime.strptime(str(target_date), fmt)
         day_of_year = (d2 - d1).days + 1
-        # Simuliert die elliptische Umlaufbahn der Sonne
+        # Simuliert die Umlaufbahn der Sonne
         sonnen_grad = (day_of_year * 0.9856) + (decimal_hour * 0.041)
         sonnen_grad = sonnen_grad % 360.0
 
-    # Zuweisung in die 64er-Kreismatrix (Human Design Segmente)
+    # Zuweisung in die 64er-Kreismatrix (Segmente)
     segment_size = 360.0 / 64  # 5.625 Grad pro Segment
     tor = int(sonnen_grad / segment_size) + 1
     
@@ -70,7 +70,7 @@ def calculate_matrix(target_date, target_time):
 
 # --- AUSGABE UND KI-PROMPT-GENERATOR ---
 if submit:
-    # 1. Zeitpunkt (t1) = Geburt / Persönlichkeit
+    # 1. Zeitpunkt (t1) = Geburt / Hardware-Basis
     grad_t1, tor_t1, linie_t1 = calculate_matrix(date, time)
     
     # 2. Zeitpunkt (t2) = Biologisches Delta (88° Sonnenbogen zurückrechnen)
@@ -91,24 +91,24 @@ if submit:
         
     st.write("---")
     
-    # DER AUTOMATISIERTE KI-PROMPT (Exakt nach der Philosophie deines Buches 'ENTMYSTIFIZIERUNG')
+    # DER AKTUALISIERTE, LEICHTE KI-PROMPT FÜR 2026+
     st.write("### 🤖 Generierter Prompt für Ihre KI (z.B. ChatGPT / Claude)")
     st.info("Kopiere den folgenden Textblock und füge ihn in deine KI ein, um die entmystifizierte Textausgabe zu erhalten:")
     
     ki_prompt = f"""
-Du bist eine KI für bio-psychologische Systemanalyse. Deine Aufgabe ist es, die übermittelten astronomischen Koordinatendaten eines menschlichen Betriebssystems zu interpretieren. 
+Du bist ein KI-Modul für moderne, bio-psychologische Systemanalyse im Jahr 2026+. Deine Aufgabe ist es, die mathematischen Koordinatendaten eines menschlichen Körpersystems in eine absolut alltagstaugliche, klare und leicht verständliche Sprache zu übersetzen.
 
-NUTZE STRIKTE REGELN FÜR DIE SPRACHE (Basierend auf dem Werk 'ENTMYSTIFIZIERUNG' von Gabriele Elisabeth Mönnig):
-1. Verwende NIEMALS spirituelle oder esoterische Begriffe (keine 'Seelenaufgabe', kein 'Karma', keine 'göttliche Fügung', keine 'Heilung', kein 'Aufstieg').
-2. Übersetze 'Tore/Zentren' in 'Strukturelle Dispositionen / Funktionale Netzwerke'.
-3. Interpretiere den aktuellen Jetzt-Moment als 'logischen GPS-Standort und Konsequenz aller mathematischen Variablen'. Er ist keine Aufgabe, sondern Datenmaterial.
-4. Das Ziel ist funktionale Klarheit (Alignment) und die vollständige Entlastung des Klienten von leistungsorientiertem Veränderungsdruck ('sich genug anstrengen'). Was stimmig ist, ordnet sich von selbst.
+WICHTIGE DIENSTANWEISUNG FÜR DEINEN SPRACHSTIL:
+1. ENTFERNE DEN SPIRITUELLEN ÜBERBAU KONSEQUENT: Nutze keine Begriffe wie 'Seelenaufgabe', 'Karma', 'göttliche Fügung', 'Heilung', 'Aufstieg' oder 'Universum'.
+2. SEI KEIN DOGMA: Präsentiere deine Analyse nicht als 'absolute Wahrheit'. Es ist lediglich ein Blick auf ein Modell. Vermeide es, dem Nutzer zu erklären, wie er richtig zu leben hat.
+3. SPRACHSTIL 2026+: Schreibe im aktiven Dialog, nahbar, pragmatisch und leicht verständlich. Keine verschachtelten Sätze, kein trockenes Fach-Chinesisch. Nutze stattdessen klare Alltagsmetaphern (wie z.B. 'Betriebssystem', 'Werkseinstellung', 'Kontext-Wechsel').
+4. JETZT-MOMENT ENTLASTEN: Betrachte die aktuelle Phase des Nutzers als logische Konsequenz seiner Daten. Nimm jeden Druck raus, dass er sich für eine Veränderung 'nur genug anstrengen' müsste. Was stimmig ist, ordnet sich von selbst.
 
-Hier sind die zu analysierenden Systemdaten des Klienten aus der 64er-Kreismatrix:
-- Primäre Hardware-Konstante (Geburt/T1): Segment {tor_t1}, Untersegment (Linie) {linie_t1} (Berechnete Koordinate: {grad_t1}°)
-- Sekundäres Biologisches Delta (Vorgeburtlich/T2): Segment {tor_t2}, Untersegment (Linie) {linie_t2} (Berechnete Koordinate: {grad_t2}°)
+Hier sind die reinen Systemdaten aus der 64er-Kreismatrix:
+- Primäre Grundkonfiguration (Geburt/T1): Segment {tor_t1}, Untersegment (Linie) {linie_t1} (Koordinate: {grad_t1}°)
+- Sekundäres biologisches Delta (Vorgeburtlich/T2): Segment {tor_t2}, Untersegment (Linie) {linie_t2} (Koordinate: {grad_t2}°)
 
-Schreibe eine glasklare, rein pragmatische und lesbare Analyse, die dem Nutzer zeigt, wie sein System auf Basis dieser Hardware-Konfiguration im Alltag funktional reagiert, ohne ihm vorzuschreiben, wie er richtig zu leben hat.
+Erstelle ein kurzes, knackiges und unkompliziertes Feedback, das dem Nutzer hilft, seine aktuelle Dynamik im Alltag ohne Leistungsdruck zu verstehen.
 """
     
-    st.text_area(label="Copy-Paste-Prompt:", value=ki_prompt, height=350)
+    st.text_area(label="Copy-Paste-Prompt:", value=ki_prompt, height=380)
